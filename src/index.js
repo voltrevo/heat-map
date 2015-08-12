@@ -15,5 +15,7 @@ global.lib = {
   getConnectionTimeTable: require('./getConnectionTimeTable.js'),
   calculateAverage: require('./calculateAverage.js'),
   calculatePercentile: require('./calculatePercentile.js'),
-  createHeatMap: require('./createHeatMap.js')
+  createHeatMap: require('./createHeatMap.js'),
+  cubicSpline: require('cubic-spline'),
+  resample: require('./resample.js')
 };

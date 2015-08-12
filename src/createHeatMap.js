@@ -3,6 +3,7 @@
 require('./heatMap.css');
 
 var assert = require('assert');
+var resample = require('./resample.js');
 
 var createTable = function(rows, cols) {
   var table = document.createElement('table');
@@ -27,6 +28,23 @@ var createTable = function(rows, cols) {
     element: table,
     cells: cells
   };
+};
+
+var transpose = function(data) {
+  var rows = data[0].length;
+  var cols = data.length;
+
+  var result = [];
+
+  for (var i = 0; i !== rows; i++) {
+    result.push([]);
+
+    for (var j = 0; j !== cols; j++) {
+      result[i][j] = data[j][i];
+    }
+  }
+
+  return result;
 };
 
 var normalizeData = function(data) {
@@ -71,17 +89,26 @@ var scaleData = function(data) {
   });
 };
 
-var generateColor = function(x) {
-  if (x === undefined) {
+var clamp = function(lower, x, upper) {
+  return Math.max(lower, Math.min(upper, x));
+};
+
+var generateColor = function(xParam) {
+  if (xParam === undefined) {
     return 'rgb(191, 191, 191)';
   }
 
-  var interp = Math.round(255 * (1 - x));
+  var x = clamp(0, xParam, 1);
+
+  var interp = Math.round(255 * (1 - x * x));
   return 'rgb(' + [255, interp, interp].join(', ') + ')';
 };
 
-module.exports = function(dataParam) {
-  var data = scaleData(normalizeData(dataParam));
+module.exports = function(dataParam, resamplingFactor) {
+  var data = transpose(scaleData(normalizeData(dataParam)).map(function(row) {
+    return resample(row.reverse(), resamplingFactor || 1);
+  }));
+
   var rows = data.length;
   var cols = data[0].length;
 

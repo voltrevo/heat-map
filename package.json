@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "cssify": "^0.7.0",
+    "cubic-spline": "^1.0.4",
     "eslint": "^0.24.1",
     "eslint-config-opentok": "0.0.1",
     "eslint-plugin-require-path-exists": "^1.0.15",
