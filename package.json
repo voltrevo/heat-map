@@ -1,0 +1,24 @@
+{
+  "name": "graphs-are-pretty",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "graphs",
+    "pretty",
+    "tokbox",
+    "data",
+    "hackathon"
+  ],
+  "author": "tokbox",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^0.24.1",
+    "eslint-config-opentok": "0.0.1",
+    "eslint-plugin-require-path-exists": "^1.0.15",
+    "fetch": "^0.3.6"
+  }
+}
