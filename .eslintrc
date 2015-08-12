@@ -13,7 +13,8 @@
     "no-param-reassign": 0,
     "consistent-this": 0,
 
-    "no-warning-comments": 0
+    "no-warning-comments": 0,
+    "no-constant-condition": 0
   },
   "plugins": [
     "require-path-exists"

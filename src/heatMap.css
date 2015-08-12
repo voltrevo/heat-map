@@ -1,0 +1,11 @@
+.heat-map {
+  border: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.heat-map td {
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+}
