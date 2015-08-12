@@ -47,24 +47,6 @@ var transpose = function(data) {
   return result;
 };
 
-var normalizeData = function(data) {
-  var maxLen = data.map(function(slice) {
-    return slice ? slice.length : 0;
-  }).reduce(function(acc, slice) {
-    return (slice ? Math.max(acc, slice) : acc);
-  });
-
-  return data.map(function(slice) {
-    return slice || [];
-  }).map(function(slice) {
-    while (slice.length < maxLen) {
-      slice.push(undefined);
-    }
-
-    return slice;
-  });
-};
-
 var specialMax = function(x, y) {
   if (x === undefined) {
     return y;
@@ -100,12 +82,12 @@ var generateColor = function(xParam) {
 
   var x = clamp(0, xParam, 1);
 
-  var interp = Math.round(255 * (1 - x * x));
+  var interp = Math.round(255 * (1 - x));
   return 'rgb(' + [255, interp, interp].join(', ') + ')';
 };
 
 module.exports = function(dataParam, resamplingFactor) {
-  var data = transpose(scaleData(normalizeData(dataParam)).map(function(row) {
+  var data = transpose(scaleData(dataParam).map(function(row) {
     return resample(row.reverse(), resamplingFactor || 1);
   }));
 

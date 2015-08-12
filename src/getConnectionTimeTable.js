@@ -38,7 +38,88 @@ var checkReport = function(report) {
   );
 };
 
-module.exports = function(startDate, endDate) {
+var totalAverage = function(data) {
+  var result = data[0].map(function() {
+    return {
+      sum: 0,
+      count: 0
+    };
+  });
+
+  for (var i = 0; i !== data.length; i++) {
+    data[i].forEach(function(x, j) {
+      if (x !== undefined) {
+        result[j].sum += x;
+        result[j].count++;
+      }
+    });
+  }
+
+  return result.map(function(p) {
+    return p.sum / p.count;
+  });
+};
+
+var cleanse = function(data) {
+  var avg = totalAverage(data);
+
+  return data.map(function(row) {
+    var clean = row.every(function(x) {
+      return x !== undefined;
+    });
+
+    if (!clean) {
+      return avg.slice();
+    }
+
+    return row;
+  });
+};
+
+var rollingAverage = function(dataParam, len) {
+  var data = cleanse(dataParam);
+  var result = [];
+  var rollingLen = data.length - len + 1;
+  var innerLen = data[0].length;
+
+  for (var i = 0; i < rollingLen; i++) {
+    var curr = [];
+
+    for (var j = 0; j !== innerLen; j++) {
+      var sum = 0;
+
+      for (var k = 0; k !== len; k++) {
+        sum += data[i + k][j];
+      }
+
+      curr.push(sum / rollingLen);
+    }
+
+    result.push(curr);
+  }
+
+  return result;
+};
+
+var normalizeData = function(data) {
+  var maxLen = data.map(function(slice) {
+    return slice ? slice.length : 0;
+  }).reduce(function(acc, slice) {
+    return (slice ? Math.max(acc, slice) : acc);
+  });
+
+  return data.map(function(slice) {
+    return slice || [];
+  }).map(function(slice) {
+    while (slice.length < maxLen) {
+      slice.push(undefined);
+    }
+
+    return slice;
+  });
+};
+
+module.exports = function(startDate, endDate, rollWeek) {
   return Promise.all(
     dateRange(
       startDate,
@@ -62,5 +143,13 @@ module.exports = function(startDate, endDate) {
         });
       });
     })
-  );
+  ).then(
+    normalizeData
+  ).then(function(data) {
+    if (rollWeek) {
+      return rollingAverage(data, 7);
+    }
+
+    return data;
+  });
 };
