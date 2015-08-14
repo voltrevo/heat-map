@@ -138,9 +138,14 @@ module.exports = function(startDate, endDate, rollWeek) {
 
         assert(checkReport(report));
 
-        return Object.keys(report.data.frequency).map(function(key) {
+        var reportArr = Object.keys(report.data.frequency).map(function(key) {
           return report.data.frequency[key];
         });
+
+        // The last data point is a sum of all upper buckets, so it doesn't interpolate properly.
+        reportArr.pop();
+
+        return reportArr;
       });
     })
   ).then(

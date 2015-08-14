@@ -104,5 +104,21 @@ module.exports = function(dataParam, resamplingFactor) {
     });
   });
 
+  for (var j = 0; j !== cols; j++) {
+    var maxI = 0;
+
+    for (var i = 0; i !== rows; i++) {
+      if (data[i][j] > data[maxI][j]) {
+        maxI = i;
+      }
+    }
+
+    var modalCell = table.cells[maxI][j];
+
+    if (data[maxI][j] !== undefined) {
+      modalCell.style.backgroundColor = 'rgb(0, 0, 0)';
+    }
+  }
+
   return table.element;
 };
