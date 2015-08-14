@@ -5,7 +5,7 @@ var fetch = require('./memoizedFetch.js');
 var moment = require('moment');
 
 var baseUrl = (
-  'http://localhost:8695/http://viz.tokbox.com/reports/reportsdata/mobile_connection_latency/'
+  'http://localhost:8695/'
 );
 
 var dateRange = function(startDate, endDate) {
